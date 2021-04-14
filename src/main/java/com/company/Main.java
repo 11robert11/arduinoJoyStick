@@ -23,7 +23,9 @@ public class Main {
     public static void main(String[] args) throws IOException, AWTException {
         updateSerialPorts();
         SerialSetup();
-        updateResi();
+        for (int i = 400; i > 0; i--) {
+            updateResi();
+        }
         cleanUp();
     }
 
@@ -75,20 +77,39 @@ public class Main {
 
         }
     }
-    public static void updateResi()
-    {
-        List<int[]> integers = new ArrayList<>();
+    public static void updateResi() {
+        int[][] a = new int[2][5];
         try {
-            for(int i = 5; i>=0; i--) {
-                integers.add(Arrays.stream(bufferedReader.readLine().split(":")).mapToInt(Integer::parseInt).toArray());
+            for(int i = 0; i<5; i++) {
+                while (bufferedReader.ready() == false)
+                {
+                    continue;
+                }
+                String input = bufferedReader.readLine();
+                System.out.println(input);
+                int[] q = Arrays.stream(input.split(":"))
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+                if (q[0] + q[1] != q[2])
+                {
+                    i--;
+                    continue;
+                }
+
+                    a[0][i] = q[0];
+                    a[1][i] = q[1];
+
             }
-
-            //System.out.println(Arrays.toString(integers.stream().sorted().collect(Collectors.toList()).get(3)));
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("X: " + Arrays.toString(a[0]));  //x
+        System.out.println("Y: " + Arrays.toString(a[1]));  //y
     }
+
+            //System.out.println(Arrays.toString(integers.stream().sorted().collect(Collectors.toList()).get(3)));
+
+
     public static void mouseUpdate() {
 
     }
